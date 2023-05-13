@@ -1,13 +1,13 @@
-<form [formGroup]="entryFormGroup" (ngSubmit)="onSubmit()">
+<form [formGroup]="entryFormGroup">
     <label for="target-url">URL: </label>
     <input id="target-url" type="text" formControlName="targetURL">
     <br>
     <input type="file" class="file-upload" (change)="onPictureSelect($event)">
     <br>
     <label for="img-height">Image Height:</label>
-    <input id="img-height" type="number" formControlName="imgHeight" placeholder="75">
+    <input id="img-height" type="number" formControlName="imgHeight" (change)="updateImgHeight($event)">
     <label for="img-width">Image Width:</label>
-    <input id="img-width" type="number" formControlName="imgWidth" placeholder="75">
-    <br>
-    <button type="submit">{{submitText}}</button>
+    <input id="img-width" type="number" formControlName="imgWidth" (change)="updateImgWidth($event)">
+    <label for="lock-ratio">Lock aspect ratio</label>
+    <input id="lock-ratio" type="checkbox" formControlName="lockRatio" (change)="toggleRatioLock($event)">
 </form>
