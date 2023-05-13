@@ -8,12 +8,14 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { PreviewWindowComponent } from './preview-window/preview-window.component'
 import { QRCodeModule } from 'angularx-qrcode';
 import { UpdateQRCodeService } from './services/update-qrcode.service';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EntryFormComponent,
-    PreviewWindowComponent
+    PreviewWindowComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
