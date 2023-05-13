@@ -13,25 +13,18 @@ export class EntryFormComponent {
   entryFormGroup = new FormGroup({
     targetURL: new FormControl(''),
     imgHeight: new FormControl(75),
-    imgWidth: new FormControl(75)
+    imgWidth: new FormControl(75),
+    lockRatio: new FormControl(true)
   })
   tempPicture = ''
-  fileReader = new FileReader()
+  imgRatio = 1
 
   constructor(
     private qrCode: UpdateQRCodeService
     ){
-      this.fileReader.addEventListener(
-        "load",
-        () => {
-          this.tempPicture = String(this.fileReader.result)
-        },
-        false
-      )
   }
 
-  onSubmit(){
-    console.log("Entry form submited!")
+  updateQRCode(){
     var qrCodeData: QRCodeData = new QRCodeData()
     console.log(this.entryFormGroup.value.targetURL)
     if(this.entryFormGroup.value.targetURL){
@@ -47,13 +40,72 @@ export class EntryFormComponent {
       qrCodeData.imageWidth = this.entryFormGroup.value.imgWidth
     }
     this.qrCode.update(qrCodeData)
-  
+
   }
   onPictureSelect(picture: any){
-    console.log("picture selected")
-    console.log(picture.target.files[0].name)
-    console.log(this.fileReader.readAsDataURL(picture.target.files[0]))
-    //this.tempPicture = picture.target.files[0].name
+    if(picture.target.files[0]){
+      console.log("new file selected")
+      const allowedTypes = ['image/png', 'image/jpeg']
+
+      if(!allowedTypes.includes(picture.target.files[0].type)){
+        console.log("WARNING: filetype not allowed")
+        this.tempPicture = ''
+        return 
+      }
+      const reader = new FileReader()
+      reader.onload = (inputFile: any) => {
+        console.log("file reader loaded")
+        const image = new Image()
+        image.src = inputFile.target.result
+        image.onload = rs => {
+          const target = rs.currentTarget as HTMLImageElement
+          if(target){
+            this.entryFormGroup.patchValue({
+              imgHeight: target['height'],
+              imgWidth: target['width']
+            })
+            this.tempPicture = inputFile.target.result
+            this.resetAspectRatio()
+            this.updateQRCode()
+          }
+        }
+      }
+      reader.readAsDataURL(picture.target.files[0])
+    }
+    this.updateQRCode()
+  }
+  toggleRatioLock(checkbox: any){
+    if(this.entryFormGroup.value.lockRatio){
+      this.resetAspectRatio()
+    }
+    
+  }
+  resetAspectRatio(){
+    if(this.entryFormGroup.value.imgHeight && this.entryFormGroup.value.imgWidth){
+      this.imgRatio = this.entryFormGroup.value.imgHeight/this.entryFormGroup.value.imgWidth
+    }
+    else{
+      this.imgRatio = 1
+    }
+    
+  }
+  updateImgHeight(height: any){
+    this.entryFormGroup.patchValue({imgHeight: height.target.value})
+    if(this.entryFormGroup.value.lockRatio){
+      this.entryFormGroup.patchValue({imgWidth: height.target.value*(1/this.imgRatio)})
+    }
+    this.updateQRCode()
+  }
+  updateImgWidth(width: any){
+    this.entryFormGroup.patchValue({imgWidth: width.target.value})
+    if(this.entryFormGroup.value.lockRatio){
+      this.entryFormGroup.patchValue({imgHeight: width.target.value*(this.imgRatio)})
+    }
+    this.updateQRCode()
+  }
+  updateTargetURL(url: any){
+    this.entryFormGroup.patchValue({targetURL: url.target.value})
+    this.updateQRCode()
   }
 
 }
