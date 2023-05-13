@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "dist/simple-qr",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+<form [formGroup]="entryFormGroup" (ngSubmit)="onSubmit()">
+    <label for="target-url">URL: </label>
+    <input id="target-url" type="text" formControlName="targetURL">
+    <br>
+    <input type="file" class="file-upload" (change)="onPictureSelect($event)">
+    <br>
+    <label for="img-height">Image Height:</label>
+    <input id="img-height" type="number" formControlName="imgHeight" placeholder="75">
+    <label for="img-width">Image Width:</label>
+    <input id="img-width" type="number" formControlName="imgWidth" placeholder="75">
+    <br>
+    <button type="submit">{{submitText}}</button>
+</form>

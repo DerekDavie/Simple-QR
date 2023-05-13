@@ -1,0 +1,5 @@
+
+
+        <qrcode (qrCodeURL)="onChangeURL($event)" [qrdata] = "qrCode.qrData" [width]="256" [errorCorrectionLevel]="qrErrorResistance" [imageSrc]="qrCode.imageSrc" [imageHeight]="qrCode.imageHeight" [imageWidth]="qrCode.imageWidth"></qrcode>
+        <a [href]="qrCodeLink" download="qrcode">Download</a>
+
