@@ -10,4 +10,8 @@
     <input id="img-width" type="number" formControlName="imgWidth" (change)="updateImgWidth($event)">
     <label for="lock-ratio">Lock aspect ratio</label>
     <input id="lock-ratio" type="checkbox" formControlName="lockRatio" (change)="toggleRatioLock($event)">
+    <label for="correction-level">Error Correction Level</label>
+    <select id="correction-level" formControlName="correctionLevel" (change)="updateCorrectionLevel($event)">
+        <option *ngFor="let level of levelList" [ngValue]="level">{{level}}</option>
+    </select>
 </form>

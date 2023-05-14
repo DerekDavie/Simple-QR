@@ -1,5 +1,21 @@
+<qrcode
+  (qrCodeURL)="onChangeURL($event)"
+  [allowEmptyString]="qrCode.allowEmptyString"
+  [alt]="qrCode.alt"
+  [ariaLabel]="qrCode.ariaLabel"
+  [colorDark]="qrCode.colorDark"
+  [colorLight]="qrCode.colorLight"
+  [cssClass]="qrCode.cssClass"
+  [elementType]="qrCode.elementType"
+  [errorCorrectionLevel]="qrCode.errorCorrectionLevel"
+  [imageSrc]="qrCode.imageSrc"
+  [imageHeight]="qrCode.imageHeight"
+  [imageWidth]="qrCode.imageWidth"
+  [margin]="qrCode.margin"
+  [qrdata]="qrCode.qrData"
+  [scale]="qrCode.scale"
+  [title]="qrCode.title"
+  [width]="qrCode.width"
 
-
-        <qrcode (qrCodeURL)="onChangeURL($event)" [qrdata] = "qrCode.qrData" [width]="256" [errorCorrectionLevel]="qrErrorResistance" [imageSrc]="qrCode.imageSrc" [imageHeight]="qrCode.imageHeight" [imageWidth]="qrCode.imageWidth"></qrcode>
-        <a [href]="qrCodeLink" download="qrcode">Download</a>
-
+></qrcode>
+<a [href]="qrCodeLink" download="qrcode">Download</a>
