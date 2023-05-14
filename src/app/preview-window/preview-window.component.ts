@@ -27,6 +27,7 @@ export class PreviewWindowComponent {
         this.qrCode.imageSrc = data.imageSrc
         this.qrCode.imageHeight = data.imageHeight
         this.qrCode.imageWidth = data.imageWidth
+        this.qrCode.errorCorrectionLevel = data.errorCorrectionLevel
       }
     )
   }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { QRCodeData } from '../types/QRCodeData';
 import { UpdateQRCodeService } from '../services/update-qrcode.service';
+import { QRCodeErrorCorrectionLevel } from "qrcode"
 
 @Component({
   selector: 'app-entry-form',
@@ -14,19 +15,21 @@ export class EntryFormComponent {
     targetURL: new FormControl(''),
     imgHeight: new FormControl(75),
     imgWidth: new FormControl(75),
-    lockRatio: new FormControl(true)
+    lockRatio: new FormControl(true),
+    correctionLevel: new FormControl('Medium')
   })
   tempPicture = ''
   imgRatio = 1
+  levelList = ['Low', 'Medium', 'Quality', 'High']
 
   constructor(
     private qrCode: UpdateQRCodeService
     ){
+      this.entryFormGroup.patchValue({correctionLevel: 'Medium'})
   }
 
   updateQRCode(){
     var qrCodeData: QRCodeData = new QRCodeData()
-    console.log(this.entryFormGroup.value.targetURL)
     if(this.entryFormGroup.value.targetURL){
       qrCodeData.qrData = this.entryFormGroup.value.targetURL
     }
@@ -39,12 +42,14 @@ export class EntryFormComponent {
     if(this.entryFormGroup.value.imgWidth){
       qrCodeData.imageWidth = this.entryFormGroup.value.imgWidth
     }
+    if(this.entryFormGroup.value.correctionLevel){
+      qrCodeData.errorCorrectionLevel = (this.entryFormGroup.value.correctionLevel.charAt(0)) as QRCodeErrorCorrectionLevel
+    }
     this.qrCode.update(qrCodeData)
 
   }
   onPictureSelect(picture: any){
     if(picture.target.files[0]){
-      console.log("new file selected")
       const allowedTypes = ['image/png', 'image/jpeg']
 
       if(!allowedTypes.includes(picture.target.files[0].type)){
@@ -54,7 +59,6 @@ export class EntryFormComponent {
       }
       const reader = new FileReader()
       reader.onload = (inputFile: any) => {
-        console.log("file reader loaded")
         const image = new Image()
         image.src = inputFile.target.result
         image.onload = rs => {
@@ -105,6 +109,10 @@ export class EntryFormComponent {
   }
   updateTargetURL(url: any){
     this.entryFormGroup.patchValue({targetURL: url.target.value})
+    this.updateQRCode()
+  }
+  updateCorrectionLevel(level: any){
+    this.entryFormGroup.patchValue({correctionLevel: this.levelList[level.target.value.charAt(0)]})
     this.updateQRCode()
   }
 
